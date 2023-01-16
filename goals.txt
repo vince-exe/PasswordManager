@@ -1,6 +1,7 @@
 Programmi da fare per la shell linux.
 
-
+		L'APPLICAZIONE APRIRÀ UN SITO WEB IN LOCALHOST PER LA GESTIONE
+		
 1) Password manager crea dei file per ogni password che l'utente utilizza.
 
 le password/informazioni all'interno di questi file devono essere criptate con una master key che l'utente inserirà una sola volta ossia all'inizio del comando.
