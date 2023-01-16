@@ -1,0 +1,12 @@
+Programmi da fare per la shell linux.
+
+
+1) Password manager crea dei file per ogni password che l'utente utilizza.
+
+le password/informazioni all'interno di questi file devono essere criptate con una master key che l'utente inserirà una sola volta ossia all'inizio del comando.
+
+successivamente questo programma runnerà un .sh file che toglierà a tutti quanti ( owner / group / users / other ) i permessi di lettura / scrittura / accesso alla directory del programma che conterrà anche i file password criptati
+
+si potrà accedere solo tramite terminale root al programma.
+
+ogni volta che si resetta la password master tutti i file verranno eliminati.
