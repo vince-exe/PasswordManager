@@ -1,22 +1,32 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style.css">
-    <title>Home</title>
+	<title>Slide Navbar</title>
+	<link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Jost:wght@500&display=swap" rel="stylesheet">
 </head>
 <body>
-    <nav class="main-nav-bar">
-        <div class="title-container">
-            <h1>Password Manager</h1>
-        </div>
-    </nav>
-    <h1>ciao</h1>
-    <h1>ciao</h1>
-    <h1>ciao</h1>
-    <h1>ciao</h1>
-    <script src="index.js"></script>
+	<div class="main">  	
+		<input type="checkbox" id="chk" aria-hidden="true">
+
+			<div class="signup">
+				<form>
+					<label for="chk" aria-hidden="true">Sign up</label>
+					<input type="password" id="masterKey" placeholder="password" required=true minlength="10" maxlength="25">
+                    <input type="password" id="masterKeyConfirm" placeholder="confirm" required=true minlength="10" maxlength="25">
+					<button>Sign up</button>
+                    <h2 class="text">Note: By creating a new master password you will lost all the old passwords.</h2>
+				</form>
+			</div>
+
+			<div class="login">
+				<form>
+					<label for="chk" aria-hidden="true">Login</label>
+					<input type="password" id="masterKeyLogin" placeholder="password" required=true minlength="10" maxlength="25">
+					<button>Login</button>
+				</form>
+			</div>
+	</div>
+    <h1></h1>
 </body>
 </html>
