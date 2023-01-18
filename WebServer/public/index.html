@@ -1,32 +1,31 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Slide Navbar</title>
+	<title>Password Manager</title>
 	<link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Jost:wght@500&display=swap" rel="stylesheet">
 </head>
 <body>
-	<div class="main">  	
-		<input type="checkbox" id="chk" aria-hidden="true">
-
-			<div class="signup">
-				<form>
+	<div class="card">
+		<h1 id="title-application">Password Manager</h1>
+		<h2 id="msg-to-display"></h2>
+		<div class="main">  	
+			<input type="checkbox" id="chk" aria-hidden="true">
+				<div class="signup">
 					<label for="chk" aria-hidden="true">Sign up</label>
 					<input type="password" id="masterKey" placeholder="password" required=true minlength="10" maxlength="25">
-                    <input type="password" id="masterKeyConfirm" placeholder="confirm" required=true minlength="10" maxlength="25">
-					<button>Sign up</button>
-                    <h2 class="text">Note: By creating a new master password you will lost all the old passwords.</h2>
-				</form>
-			</div>
-
-			<div class="login">
-				<form>
+					<input type="password" id="masterKeyConfirm" placeholder="confirm" required=true minlength="10" maxlength="25">
+					<button id="signupBtn">Sign up</button>
+					<h2 class="text">Note: By creating a new master password you will lost all the old passwords.</h2>
+				</div>
+	
+				<div class="login">
 					<label for="chk" aria-hidden="true">Login</label>
 					<input type="password" id="masterKeyLogin" placeholder="password" required=true minlength="10" maxlength="25">
-					<button>Login</button>
-				</form>
-			</div>
+					<button id="loginBtn">Login</button>
+				</div>
+		</div>
 	</div>
-    <h1></h1>
+	<script src="index.js"></script>
 </body>
 </html>

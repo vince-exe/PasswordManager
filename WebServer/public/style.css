@@ -1,4 +1,5 @@
-body{
+
+body {
 	margin: 0;
 	padding: 0;
 	display: flex;
@@ -9,6 +10,30 @@ body{
 	background: linear-gradient(to bottom, #0f0c29, #302b63, #24243e);
 }
 
+.card {
+	display: flex;
+	justify-content:center;
+	flex-direction: column;	
+	text-align: center;
+	margin-bottom: 120px;
+}
+
+#msg-to-display {
+	display: none;
+	padding-top: 10px;
+	text-align: center;
+	font-size: 22px;
+	color: #e0dede;
+}
+
+#title-application {
+	color: #fff;
+	text-align: center;
+	font-size: 40px;
+	padding-bottom: 13px;
+	letter-spacing: 1px;
+}
+
 .main{
 	width: 350px;
 	height: 500px;
@@ -17,6 +42,7 @@ body{
 	background: url("https://doc-08-2c-docs.googleusercontent.com/docs/securesc/68c90smiglihng9534mvqmq1946dmis5/fo0picsp1nhiucmc0l25s29respgpr4j/1631524275000/03522360960922298374/03522360960922298374/1Sx0jhdpEpnNIydS4rnN4kHSJtU1EyWka?e=view&authuser=0&nonce=gcrocepgbb17m&user=03522360960922298374&hash=tfhgbs86ka6divo3llbvp93mg4csvb38") no-repeat center/ cover;
 	border-radius: 10px;
 	box-shadow: 5px 20px 50px #000;
+	margin: auto;
 }
 
 #chk{
@@ -54,6 +80,7 @@ label{
 }
 
 input{
+	text-align: center;
 	width: 60%;
 	height: 20px;
 	background: #e0dede;
