@@ -9,6 +9,9 @@ const fs2 = require('fs')
 
 const bcrypt = require('bcrypt')
 
+const utils = require('./utilities/utils');
+const { deepStrictEqual } = require('assert');
+
 app.use(cors())
 app.use(bodyParser.json())
 
@@ -47,4 +50,28 @@ app.route('/api/v1/signup').post( async (request, response) => {
     return response.sendStatus(200)
 })
 
+app.route('/api/v1/login').post( async (request, response) => {
+    if(!request.body.password || request.body.password.length < 10) {
+        return response.sendStatus(402)
+    }
+
+    try {
+        if(!fs2.existsSync('../login')) {
+            return response.sendStatus(401)
+        }
+        let pswFFile = await fs.readFile("../login/login.txt")
+
+        if(!await bcrypt.compare(request.body.password, pswFFile.toString())) {
+            return response.sendStatus(401)
+        }
+        utils.setUsrPsw(request.body.password)
+
+        return response.sendStatus(200)
+    }
+    catch(e) {
+        console.error('\nLogin ' + e)
+        return response.status(500).json({message: 'error in the login system'})
+    }
+})
+    
 app.listen(7550, console.log('Successfully started the application, visit: http://localhost:7550'));
