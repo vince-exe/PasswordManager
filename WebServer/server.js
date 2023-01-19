@@ -10,7 +10,6 @@ const fs2 = require('fs')
 const bcrypt = require('bcrypt')
 
 const utils = require('./utilities/utils');
-const { deepStrictEqual } = require('assert');
 
 app.use(cors())
 app.use(bodyParser.json())
@@ -18,7 +17,7 @@ app.use(bodyParser.json())
 app.use(express.static('public'));
 
 app.get('/', (request, response) => {
-    response.redirect('http://localhost:7550/index.html');
+    response.redirect('http://localhost:7550/views/index.html');
 });
 
 app.route('/api/v1/signup').post( async (request, response) => {
@@ -61,11 +60,11 @@ app.route('/api/v1/login').post( async (request, response) => {
         }
         let pswFFile = await fs.readFile("../login/login.txt")
 
-        if(!await bcrypt.compare(request.body.password, pswFFile.toString())) {
+        if(!await bcrypt.compare(request.body.password, pswFFile.toString())) { 
             return response.sendStatus(401)
         }
         utils.setUsrPsw(request.body.password)
-
+        
         return response.sendStatus(200)
     }
     catch(e) {
@@ -73,5 +72,5 @@ app.route('/api/v1/login').post( async (request, response) => {
         return response.status(500).json({message: 'error in the login system'})
     }
 })
-    
+
 app.listen(7550, console.log('Successfully started the application, visit: http://localhost:7550'));

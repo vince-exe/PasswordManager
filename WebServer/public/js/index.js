@@ -8,6 +8,9 @@ const msgToDisplay = document.getElementById('msg-to-display')
 
 const titleApplication = document.getElementById('title-application')
 
+const loginBtn = document.getElementById('loginBtn')
+
+const pswInputLogin = document.getElementById('masterKeyLogin')
 
 const showMsgToDisplay = (msg) => {
     msgToDisplay.style.display = 'block'
@@ -43,6 +46,33 @@ signUpBtn.addEventListener('click', ev => {
 
             passwordInput.value = ""
             passwordInputConfirm.value = ""
+        }
+    })
+    .catch(reason => {
+        console.error(reason)
+        return
+    })
+})
+
+loginBtn.addEventListener('click', async e => {
+    fetch('http://localhost:7550/api/v1/login', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            'password': pswInputLogin.value
+        })
+    })
+    .then(async response => {
+        if(response.status == 401 || response.status == 402) {
+            return showMsgToDisplay("Master key doesn't match with this password.")
+        }
+        if(response.status == 500) {
+            return showMsgToDisplay("The system failed to handle the login method, please try later")
+        }
+        if(response.status == 200) {
+            window.location.replace("http://localhost:7550/views/homepage.html")
         }
     })
     .catch(reason => {
