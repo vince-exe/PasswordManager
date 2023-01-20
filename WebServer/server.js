@@ -10,6 +10,8 @@ const fs2 = require('fs')
 const bcrypt = require('bcrypt')
 
 const utils = require('./utilities/utils');
+const { allowedNodeEnvironmentFlags, title } = require('process');
+const { response } = require('express');
 
 app.use(cors())
 app.use(bodyParser.json())
@@ -32,14 +34,8 @@ app.route('/api/v1/signup').post( async (request, response) => {
             fs2.mkdirSync('../login')
         }
 
-        if((await fs.writeFile('../login/login.txt', pswHash)) != undefined) {
-            console.error('\n Error while trying to write login file')
-            return response.status(500).json({message: 'error while trying to write login file'})
-        }
-        if((await fs.chmod('../login/login.txt', 0o000)) != undefined) {
-            console.error('\n Error while trying to write login file')
-            return response.status(500).json({message: 'error while updating permissions to login file'})
-        }
+        await fs.writeFile('../login/login.txt', pswHash)
+        await fs.chmod('../login/login.txt', 0o000)
     }
     catch(e) {
         console.error('\nRegistration ' + e)
@@ -64,12 +60,58 @@ app.route('/api/v1/login').post( async (request, response) => {
             return response.sendStatus(401)
         }
         utils.setUsrPsw(request.body.password)
-        
+        utils.setKeyCripting(utils.getUsrPsw(), 'aes-256-ctr', 'sha256')
+
         return response.sendStatus(200)
     }
     catch(e) {
         console.error('\nLogin ' + e)
         return response.status(500).json({message: 'error in the login system'})
+    }
+})
+
+const AUTHmiddleware = (req, resp, next) => {
+    if(utils.getKeyCripting() === " ") { 
+        return resp.sendStatus(401)
+    }
+    next()
+}
+
+app.route('/api/v1/add-pwd').post(AUTHmiddleware, async (request, response) => {
+    if(!request.body.title || !request.body.msg) {
+        return response.sendStatus(402)
+    }
+
+    try {
+        if(!fs2.existsSync('../passwords')) {
+            fs2.mkdirSync('../passwords')
+            await fs.writeFile('../passwords/pass.json', "[ ]")
+            await fs.chmod('../passwords/pass.json', 0o000)
+        }
+        
+        try {
+            fs2.accessSync('../passwords/pass.json')
+        }
+        catch(e) {
+            await fs.writeFile('../passwords/pass.json', "[ ]")
+            await fs.chmod('../passwords/pass.json', 0o000)
+        }
+        
+        let pwds = require('../passwords/pass.json')
+
+        if(pwds.find(obj => obj.title === request.body.title)) {
+            return response.sendStatus(400)
+        }
+    
+        pwds.push({title: request.body.title, msg: utils.encrypt(Buffer.from(request.body.msg)).toString()})
+        let data = JSON.stringify(pwds, null, 2);
+        
+        fs2.writeFileSync('../passwords/pass.json', data.toString())
+        return response.sendStatus(200)
+    }
+    catch(e) {
+        console.error('\nAdd Password ' + e)
+        return response.status(500).json({message: 'error in the add-pwd system'})
     }
 })
 
