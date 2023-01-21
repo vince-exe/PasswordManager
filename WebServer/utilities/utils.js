@@ -26,27 +26,28 @@ exports.getKeyCripting = () => {
     return __key_cripting
 }
 
-exports.encrypt = (buffer) => {            
-    // Create an initialization vector             
-    const iv = crypto.randomBytes(16);         
-           
-    // Create a new cipher using the algorithm, key, and iv              
-    const cipher = crypto.createCipheriv(__algorithm, __key_cripting, iv);         
-           
-    // Create the new (encrypted) buffer          
-    return Buffer.concat([iv, cipher.update(buffer), cipher.final()]);                
+exports.encrypt = (buffer) => {      
+    let iv = crypto.randomBytes(16);      
+    let cipher = crypto.createCipheriv(algorithm, Buffer.from(key), iv);
+
+    let encrypted = cipher.update(text);
+
+    encrypted = Buffer.concat([encrypted, cipher.final()]);
+
+    return {
+        iv: iv.toString('hex'),
+        encryptedData: encrypted.toString('hex')
+    };               
 };  
 
-exports.decrypt = (encrypted) => { 
-    // Get the iv: the first 16 bytes 
-    const iv = encrypted.slice(0, 16); 
+exports.decrypt = (text) => { 
+    let iv = Buffer.from(text.iv, 'hex');
+    let encryptedText = Buffer.from(text.encryptedData, 'hex');
 
-    // Get the rest         
-    encrypted = encrypted.slice(16);         
+    let decipher = crypto.createDecipheriv(algorithm, Buffer.from(key), iv);
 
-    // Create a decipher         
-    const decipher = crypto.createDecipheriv(__algorithm, __key_cripting, iv); 
+    let decrypted = decipher.update(encryptedText);
+    decrypted = Buffer.concat([decrypted, decipher.final()]);
 
-    // Actually decrypt it 
-    return Buffer.concat([decipher.update(encrypted), decipher.final()]); 
+    return decrypted.toString(); 
 }; 

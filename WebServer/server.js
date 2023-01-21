@@ -102,8 +102,8 @@ app.route('/api/v1/add-pwd').post(AUTHmiddleware, async (request, response) => {
         if(pwds.find(obj => obj.title === request.body.title)) {
             return response.sendStatus(400)
         }
-    
-        pwds.push({title: request.body.title, msg: utils.encrypt(Buffer.from(request.body.msg)).toString()})
+        
+        pwds.push({title: request.body.title, msg: utils.encrypt(request.body.msg)})
         let data = JSON.stringify(pwds, null, 2);
         
         fs2.writeFileSync('../passwords/pass.json', data.toString())
@@ -117,7 +117,14 @@ app.route('/api/v1/add-pwd').post(AUTHmiddleware, async (request, response) => {
 
 app.route("/api/v1/get-passwords").get(AUTHmiddleware, (request, response) => {
     try {
-        
+        let decrArr = []
+        let cripArr = require('../passwords/pass.json')
+
+        cripArr.forEach(pwdObj => {
+            decrArr.push({title: pwdObj.title, pwd: utils.decrypt(pwdObj.msg).toString()})
+        })
+
+        response.status(200).json({pwdList: cripArr})
     }
     catch(e) {
         console.error('\nGet Password ' + e)
