@@ -59,8 +59,7 @@ app.route('/api/v1/login').post( async (request, response) => {
         if(!await bcrypt.compare(request.body.password, pswFFile.toString())) { 
             return response.sendStatus(401)
         }
-        utils.setUsrPsw(request.body.password)
-        utils.setKeyCripting(utils.getUsrPsw(), 'aes-256-ctr', 'sha256')
+        utils.Encrypter.init(request.body.password, "aes-192-cbc")
 
         return response.sendStatus(200)
     }
@@ -71,7 +70,7 @@ app.route('/api/v1/login').post( async (request, response) => {
 })
 
 const AUTHmiddleware = (req, resp, next) => {
-    if(utils.getKeyCripting() === " ") { 
+    if(utils.Encrypter.key === " ") { 
         return resp.sendStatus(401)
     }
     next()
@@ -103,7 +102,7 @@ app.route('/api/v1/add-pwd').post(AUTHmiddleware, async (request, response) => {
             return response.sendStatus(400)
         }
         
-        pwds.push({title: request.body.title, msg: utils.encrypt(request.body.msg)})
+        pwds.push({title: request.body.title, msg: utils.Encrypter.encrypt(request.body.msg)})
         let data = JSON.stringify(pwds, null, 2);
         
         fs2.writeFileSync('../passwords/pass.json', data.toString())
@@ -121,10 +120,10 @@ app.route("/api/v1/get-passwords").get(AUTHmiddleware, (request, response) => {
         let cripArr = require('../passwords/pass.json')
 
         cripArr.forEach(pwdObj => {
-            decrArr.push({title: pwdObj.title, pwd: utils.decrypt(pwdObj.msg).toString()})
+            decrArr.push({title: pwdObj.title, pwd: utils.Encrypter.dencrypt(pwdObj.msg)})
         })
 
-        response.status(200).json({pwdList: cripArr})
+        response.status(200).json({pwdList: decrArr})
     }
     catch(e) {
         console.error('\nGet Password ' + e)
