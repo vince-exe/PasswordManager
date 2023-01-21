@@ -17,7 +17,6 @@ cancelBtn.addEventListener('click', e => {
     window.location.replace('http://localhost:7550/views/homepage.html')
 })
 
-
 confirmBtn.addEventListener('click', e => {
     if (!titlePwd.value.length || !msgPwd.value.length) {
         return showMsgToDisplay("Title and message can't be empty")

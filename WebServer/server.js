@@ -115,4 +115,14 @@ app.route('/api/v1/add-pwd').post(AUTHmiddleware, async (request, response) => {
     }
 })
 
+app.route("/api/v1/get-passwords").get(AUTHmiddleware, (request, response) => {
+    try {
+        
+    }
+    catch(e) {
+        console.error('\nGet Password ' + e)
+        return response.sendStatus(500)
+    }
+})
+
 app.listen(7550, console.log('Successfully started the application, visit: http://localhost:7550'));
