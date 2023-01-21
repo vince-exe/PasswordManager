@@ -26,6 +26,14 @@ body {
     padding-top: 30px;
 }
 
+#msg-to-display {
+    display: none;
+	margin-top: 48px;
+	text-align: center;
+	font-size: 22px;
+	color: #e0dede;
+}
+
 .card {
     backface-visibility: visible;
     display: flex;

@@ -12,13 +12,14 @@
     <h3 id="msg1">Hi there! here you can add a new password to your list :)</h3>
     <div class="card">
         <h1 id="title-label">Title</h1>
-        <input type="text" id="title-password">
-        <textarea id="pwd-box" spellcheck="false"></textarea>
+        <input type="text" id="title-password" placeholder="password title" maxlength="20">
+        <textarea id="pwd-box" spellcheck="false" placeholder="your password here" maxlength="35"></textarea>
     </div>
     <div class="buttons-container">
         <button class="button" id="cancelBtn">Cancel</button>
-        <button class="button" id="cancelBtn">Confirm</button>
+        <button class="button" id="confirmBtn">Confirm</button>
     </div>
+    <h2 id="msg-to-display"></h2>
     <script src="../js/add-pwd.js"></script>
 </body>
 </html>
