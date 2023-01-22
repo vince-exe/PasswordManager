@@ -10,8 +10,8 @@
 
 ### DA FARE:
 
-#### 1) LOGIN SYSTEM
-
 #### 2) CREAZIONE / RIMOZIONE / MODIFICA / LETTURA DELLE Password
 
 #### 3) ogni volta che si resetta la password master tutti i file verranno eliminati.
+
+#### 4) bottone per la ricerca delle passwords

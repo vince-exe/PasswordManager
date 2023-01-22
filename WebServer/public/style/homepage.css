@@ -55,3 +55,106 @@ body {
 #add-pwd:hover {
     border: solid 5px #0c0c0cec;
 }
+
+.main-box {
+    display: flex;
+    flex-direction: column;
+    margin-top: 80px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 0;
+    width: 95%;
+    gap: 50px;
+}
+
+.box {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    width: 100%;
+    gap: 30px;
+    flex-direction: row;
+}
+
+.small-box {
+    width: 30%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    backface-visibility: visible;
+    border: solid 4px #0c0c0cec;  
+    border-radius: 13px;
+}
+
+#title-label {
+    padding-top: 20px;
+    color: rgba(255, 255, 255, 0.842);
+    letter-spacing: 1.7px;
+    font-weight: 600;
+}
+
+#title-password {
+    background: transparent;
+    font-weight: 700;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-top: 4.5px;
+    margin-top: 15px;
+    padding-bottom: 4.5px;
+    outline: none;
+    border: solid 4px #0c0c0cec;
+    border-radius: 12px; 
+    text-align: center;
+    height: 44px;
+    width: 80%;
+    font-size: 20px;
+    color: rgb(230, 230, 230);
+}
+
+#pwd-box {
+    width: 80%;
+    padding-top: 15px;
+    padding-bottom: 15px;
+    padding-left: 15px;
+    padding-right: 15px;
+    border: solid 4px #0c0c0cec;
+    font-size: 20px;
+    background-color: transparent;  
+    border-radius: 12px;
+    color: rgb(230, 230, 230);
+    outline: none;
+    resize: none;
+    height: 250px;
+    margin-top: 25px;
+    margin-bottom: 30px;
+}
+
+.buttons-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    width: 96%;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 10px;
+    margin-bottom: 25px;
+}
+
+.button-small-box {
+    width: 31%;
+    outline: none;
+    border: solid 4px #0c0c0cec;
+    letter-spacing: 0.8px;
+    font-weight: 700;
+    background-color: transparent;
+    color: rgb(230, 230, 230);
+    font-size: 15px;
+    padding: 10px 10px;
+    border-radius: 12px;
+}
+
+.button-small-box:hover {
+    border: solid 5px #0c0c0cec;
+}
