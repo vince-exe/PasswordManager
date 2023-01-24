@@ -27,25 +27,51 @@ body {
 }
 
 .btn-container {
-    width: 300px;
-    height: 62px;
+    display: flex;
+    width: 90%;
     margin-top: 80px;
     margin-left: auto;
     margin-right: auto;
     margin-bottom: 0;
-    justify-content: center;
+    justify-content: space-around;
+    flex-direction: row;
     align-items: center;
 }
 
 #add-pwd {
-    width: 100%;
-    height: 100%;
+    width: 300px;
+    height: 60px;
     outline: none;
     border: solid 4px #0c0c0cec;
     letter-spacing: 0.8px;
     font-weight: 700;
-    margin-left: auto;
-    margin-right: auto;
+    background-color: transparent;
+    color: rgb(230, 230, 230);
+    font-size: 20px;
+    border-radius: 12px;
+}
+
+#search-box {
+    width: 400px;
+    height: 60px;
+    outline: none;
+    border: solid 4px #0c0c0cec;
+    letter-spacing: 0.8px;
+    font-weight: 700;
+    background-color: transparent;
+    color: rgb(230, 230, 230);
+    font-size: 20px;
+    border-radius: 12px;
+    padding-left: 20px;
+}
+
+.s-r-btns{
+    width: 150px;
+    height: 50px;
+    outline: none;
+    border: solid 4px #0c0c0cec;
+    letter-spacing: 0.8px;
+    font-weight: 700;
     background-color: transparent;
     color: rgb(230, 230, 230);
     font-size: 20px;
@@ -53,6 +79,14 @@ body {
 }
 
 #add-pwd:hover {
+    border: solid 5px #0c0c0cec;
+}
+
+#search-btn:hover {
+    border: solid 5px #0c0c0cec;
+}
+
+#reset-btn:hover {
     border: solid 5px #0c0c0cec;
 }
 
