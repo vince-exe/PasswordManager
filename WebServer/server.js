@@ -10,8 +10,6 @@ const fs2 = require('fs')
 const bcrypt = require('bcrypt')
 
 const utils = require('./utilities/utils');
-const { allowedNodeEnvironmentFlags, title } = require('process');
-const { response } = require('express');
 
 app.use(cors())
 app.use(bodyParser.json())
@@ -96,7 +94,8 @@ app.route('/api/v1/add-pwd').post(AUTHmiddleware, async (request, response) => {
             await fs.chmod('../passwords/pass.json', 0o000)
         }
         
-        let pwds = require('../passwords/pass.json')
+        let rawdata = fs2.readFileSync('../passwords/pass.json');
+        let pwds = JSON.parse(rawdata);
 
         if(pwds.find(obj => obj.title === request.body.title)) {
             return response.sendStatus(400)
@@ -117,8 +116,10 @@ app.route('/api/v1/add-pwd').post(AUTHmiddleware, async (request, response) => {
 app.route("/api/v1/get-passwords").get(AUTHmiddleware, (request, response) => {
     try {
         let decrArr = []
-        let cripArr = require('../passwords/pass.json')
 
+        let rawdata = fs2.readFileSync('../passwords/pass.json');
+        let cripArr = JSON.parse(rawdata);
+        
         cripArr.forEach(pwdObj => {
             decrArr.push({title: pwdObj.title, pwd: utils.Encrypter.dencrypt(pwdObj.msg)})
         })
@@ -127,6 +128,37 @@ app.route("/api/v1/get-passwords").get(AUTHmiddleware, (request, response) => {
     }
     catch(e) {
         console.error('\nGet Password ' + e)
+        return response.sendStatus(500)
+    }
+})
+
+app.route('/api/v1/del-pwd').post(AUTHmiddleware, (request, response) => {
+    try {
+        if(!request.body.title) { 
+            return response.sendStatus(402)
+        }
+        try {
+            fs2.accessSync('../passwords/pass.json')
+        }
+        catch(e) {
+            return response.status(405).json({message: "you don't have passwords"})
+        }
+        let rawdata = fs2.readFileSync('../passwords/pass.json');
+        let cripArray = JSON.parse(rawdata);
+
+        /* check if it doesn't exist */
+        if(cripArray.find(pwd => pwd.title == request.body.title) == undefined) {
+            return response.status(404).json({message: "the given password doesn't exist"})
+        }
+        
+        let newArr = cripArray.filter(pass => pass.title != request.body.title)        
+        let data = JSON.stringify(newArr, null, 2);
+        
+        fs2.writeFileSync('../passwords/pass.json', data.toString())
+        return response.sendStatus(200)
+    }
+    catch(e) {
+        console.error('\nRemove Password ' + e)
         return response.sendStatus(500)
     }
 })

@@ -47,6 +47,10 @@ confirmBtn.addEventListener('click', e => {
             titlePwd.value = ""
             msgPwd.value = ""
         }
+
+        if(response.status == 401) {
+            window.location.replace('http://localhost:7550/views/index.html')
+        }
     })
     .catch(reason => {
         console.error(reason)

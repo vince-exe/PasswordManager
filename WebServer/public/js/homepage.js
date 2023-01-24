@@ -51,7 +51,7 @@ const printOnRange = (min, max, array) => {
         inputPwdFunc(inputPwd, "text", "title-password", "password title", 20, array[i].title)
 
         let passArea = document.createElement('textarea')
-        textAreaFunc(passArea, "pwd-box", false, "your password here", 35, array[i].pwd)
+        textAreaFunc(passArea, "pwd-box", false, "your password here", 35, "* * * * * * * * * *")
 
         let buttonsContainer = document.createElement('div')
         buttonsContainer.classList.add('buttons-container')
@@ -60,6 +60,10 @@ const printOnRange = (min, max, array) => {
         btnContainer1.classList.add('button-small-box')
         btnContainer1.textContent = "Remove"
 
+        btnContainer1.addEventListener('click', e => {
+            deletePassword(array[i].title)
+        })
+
         let btnContainer2 = document.createElement('button')
         btnContainer2.classList.add('button-small-box')
         btnContainer2.textContent = "Update"
@@ -67,6 +71,18 @@ const printOnRange = (min, max, array) => {
         let btnContainer3 = document.createElement('button')
         btnContainer3.classList.add('button-small-box')
         btnContainer3.textContent = "Show"
+
+        let show = false
+        btnContainer3.addEventListener('click', e => {
+            if(!show) {
+                passArea.value = array[i].pwd
+                show = true
+            }
+            else {
+                passArea.value = "* * * * * * * * * *"
+                show = false
+            }
+        })
 
         /* buttons container */
         buttonsContainer.appendChild(btnContainer1)
@@ -102,7 +118,7 @@ const printOnSameRow= (n, max, array) => {
             inputPwdFunc(inputPwd, "text", "title-password", "password title", 20, array[j].title)
     
             let passArea = document.createElement('textarea')
-            textAreaFunc(passArea, "pwd-box", false, "your password here", 35, array[j].pwd)
+            textAreaFunc(passArea, "pwd-box", false, "your password here", 35, "* * * * * * * * * *")
 
             let buttonsContainer = document.createElement('div')
             buttonsContainer.classList.add('buttons-container')
@@ -110,6 +126,10 @@ const printOnSameRow= (n, max, array) => {
             let btnContainer1 = document.createElement('button')
             btnContainer1.classList.add('button-small-box')
             btnContainer1.textContent = "Remove"
+            
+            btnContainer1.addEventListener('click', e => {
+                deletePassword(array[j].title)
+            })
 
             let btnContainer2 = document.createElement('button')
             btnContainer2.classList.add('button-small-box')
@@ -118,6 +138,18 @@ const printOnSameRow= (n, max, array) => {
             let btnContainer3 = document.createElement('button')
             btnContainer3.classList.add('button-small-box')
             btnContainer3.textContent = "Show"
+            
+            let show = false
+            btnContainer3.addEventListener('click', e => {
+                if(!show) {
+                    passArea.value = array[j].pwd
+                    show = true
+                }
+                else {
+                    passArea.value = "* * * * * * * * * *"
+                    show = false
+                }
+            })
 
             /* buttons container */
             buttonsContainer.appendChild(btnContainer1)
@@ -137,23 +169,57 @@ const printOnSameRow= (n, max, array) => {
 }
 
 /* print the passwords */
-fetch('http://localhost:7550/api/v1/get-passwords').then(async response => {
-    console.log("\nstatus response: " + response.status)
+const printPasswords = () => {
+    fetch('http://localhost:7550/api/v1/get-passwords').then(async response => {
+        console.log("\nstatus response: " + response.status)
+    
+        if(response.status == 401) {
+            window.location.replace('http://localhost:7550/views/index.html')
+        }
+    
+        let array = JSON.parse(await response.text()).pwdList
+    
+        let max = calculateMultiply(4, array.length)
+        if(max == -1) {
+            return  printOnRange(0, array.length, array)
+        }
+    
+        printOnSameRow(4, array.length, array)
+    
+        /* if there are more items to print */
+        if((array.length - max) != 0) {
+            return  printOnRange(max, array.length, array)
+        }
+    })
+    .catch(error => {
+        console.error(error)
+    })
+}
 
-    let array = JSON.parse(await response.text()).pwdList
+const deletePassword = (title) => {
+    fetch('http://localhost:7550/api/v1/del-pwd', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            'title': title
+        })
 
-    let max = calculateMultiply(4, array.length)
-    if(max == -1) {
-        return  printOnRange(0, array.length, array)
-    }
+    }).then(async response => {
+        console.log("\nstatus response: " + response.status)
+    
+        if(response.status == 401) {
+            window.location.replace('http://localhost:7550/views/index.html')
+        }
+        
+        if(response.status == 200) {
+            window.location.replace('http://localhost:7550/views/homepage.html')
+        }
+    })
+    .catch(error => {
+        console.error(error)
+    })
+}
 
-    printOnSameRow(4, array.length, array)
-
-    /* if there are more items to print */
-    if((array.length - max) != 0) {
-        return  printOnRange(max, array.length, array)
-    }
-})
-.catch(error => {
-    console.error(error)
-})
+printPasswords()
