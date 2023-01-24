@@ -182,13 +182,18 @@ app.route('/api/v1/updt-pwd').post(AUTHmiddleware, (request, response) => {
         if(cripArray.find(pwd => pwd.title == request.body.oldTitle) == undefined) {
             return response.status(404).json({message: "the given password doesn't exist"})
         }
+        
+        /* check if the new title alredy exist */
+        if(cripArray.find(pwd => pwd.title == request.body.newTitle) != undefined) {
+            return response.status(406).json({message: "the new title already exist"})
+        }
 
         let newArr = cripArray.filter(pass => pass.title != request.body.oldTitle)
         newArr.push({title: request.body.newTitle, msg: utils.Encrypter.encrypt(request.body.psw)})
 
         let data = JSON.stringify(newArr, null, 2);
         fs2.writeFileSync('../passwords/pass.json', data.toString())
-        
+
         return response.sendStatus(200)
     }
     catch(e) {

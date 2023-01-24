@@ -68,6 +68,10 @@ const printOnRange = (min, max, array) => {
         btnContainer2.classList.add('button-small-box')
         btnContainer2.textContent = "Update"
 
+        btnContainer2.addEventListener('click', e => {
+            updatePasswords(array[i].title, inputPwd.value, passArea.value)
+        })
+
         let btnContainer3 = document.createElement('button')
         btnContainer3.classList.add('button-small-box')
         btnContainer3.textContent = "Show"
@@ -134,6 +138,10 @@ const printOnSameRow= (n, max, array) => {
             let btnContainer2 = document.createElement('button')
             btnContainer2.classList.add('button-small-box')
             btnContainer2.textContent = "Update"
+
+            btnContainer2.addEventListener('click', e => {
+                updatePasswords(array[j].title, inputPwd.value, passArea.value)
+            })
 
             let btnContainer3 = document.createElement('button')
             btnContainer3.classList.add('button-small-box')
@@ -215,6 +223,44 @@ const deletePassword = (title) => {
         
         if(response.status == 200) {
             window.location.replace('http://localhost:7550/views/homepage.html')
+        }
+    })
+    .catch(error => {
+        console.error(error)
+    })
+}
+
+const updatePasswords = (oldTitle, newTitle, psw) => {
+    if(psw == "* * * * * * * * * *") { return }
+
+    fetch('http://localhost:7550/api/v1/updt-pwd', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            'oldTitle': oldTitle,
+            'newTitle': newTitle,
+            'psw': psw
+        })
+
+    }).then(async response => {
+        console.log("\nstatus response: " + response.status)
+    
+        if(response.status == 401) {
+            window.location.replace('http://localhost:7550/views/index.html')
+            return
+        }
+        
+        if(response.status == 200) {
+            window.location.replace('http://localhost:7550/views/homepage.html')
+            return
+        }
+
+        if(response.status == 406) {
+            alert("there is already a box with this title!!")
+            window.location.replace('http://localhost:7550/views/homepage.html')
+            return
         }
     })
     .catch(error => {
