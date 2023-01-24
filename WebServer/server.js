@@ -10,6 +10,7 @@ const fs2 = require('fs')
 const bcrypt = require('bcrypt')
 
 const utils = require('./utilities/utils');
+const { request } = require('http');
 
 app.use(cors())
 app.use(bodyParser.json())
@@ -159,6 +160,39 @@ app.route('/api/v1/del-pwd').post(AUTHmiddleware, (request, response) => {
     }
     catch(e) {
         console.error('\nRemove Password ' + e)
+        return response.sendStatus(500)
+    }
+})
+
+app.route('/api/v1/updt-pwd').post(AUTHmiddleware, (request, response) => {
+    try {
+        if(!request.body.oldTitle || !request.body.newTitle || !request.body.psw) {
+            return response.sendStatus(402)
+        }
+        try {
+            fs2.accessSync('../passwords/pass.json')
+        }
+        catch(e) {
+            return response.status(405).json({message: "you don't have passwords"})
+        }
+        let rawdata = fs2.readFileSync('../passwords/pass.json');
+        let cripArray = JSON.parse(rawdata);
+
+        /* check if it doesn't exist */
+        if(cripArray.find(pwd => pwd.title == request.body.oldTitle) == undefined) {
+            return response.status(404).json({message: "the given password doesn't exist"})
+        }
+
+        let newArr = cripArray.filter(pass => pass.title != request.body.oldTitle)
+        newArr.push({title: request.body.newTitle, msg: utils.Encrypter.encrypt(request.body.psw)})
+
+        let data = JSON.stringify(newArr, null, 2);
+        fs2.writeFileSync('../passwords/pass.json', data.toString())
+        
+        return response.sendStatus(200)
+    }
+    catch(e) {
+        console.error('\nUpdate Password ' + e)
         return response.sendStatus(500)
     }
 })
