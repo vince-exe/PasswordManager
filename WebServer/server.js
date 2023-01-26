@@ -35,6 +35,10 @@ app.route('/api/v1/signup').post( async (request, response) => {
 
         await fs.writeFile('../login/login.txt', pswHash)
         await fs.chmod('../login/login.txt', 0o000)
+        
+        if(fs2.existsSync('../passwords')) {
+            await fs.rm('../passwords', {recursive: true, force: true})
+        }
     }
     catch(e) {
         console.error('\nRegistration ' + e)
