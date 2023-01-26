@@ -28,7 +28,7 @@ body {
 
 .btn-container {
     display: flex;
-    width: 90%;
+    width: 95%;
     margin-top: 80px;
     margin-left: auto;
     margin-right: auto;
@@ -38,7 +38,20 @@ body {
     align-items: center;
 }
 
-#add-pwd {
+.search-box {
+    display: flex;
+    flex-direction: row;
+    gap: 50px;
+    align-items: center;
+}
+
+@media(max-width:1298px) {
+    .btn-container {
+        width: 1298px;
+    }
+}
+
+ #add-pwd {
     width: 300px;
     height: 60px;
     outline: none;
@@ -99,6 +112,12 @@ body {
     margin-bottom: 50px;
     width: 95%;
     gap: 50px;
+}
+
+@media(max-width:1298px) {
+    .main-box {
+        width: 1298px;
+    }
 }
 
 .box {

@@ -2,6 +2,16 @@ const addPwdBtn = document.getElementById('add-pwd')
 
 const mainBox = document.getElementsByClassName('main-box')[0]
 
+const searchBtn = document.getElementById('search-btn')
+
+const searchBox = document.getElementById('search-box')
+searchBox.value = ""
+
+const resetBox = document.getElementById('reset-btn')
+
+var array = []
+var noreset = true
+
 addPwdBtn.addEventListener('click', e => {
     window.location.replace("http://localhost:7550/views/add-pwd.html")
 })
@@ -185,7 +195,7 @@ const printPasswords = () => {
             window.location.replace('http://localhost:7550/views/index.html')
         }
     
-        let array = JSON.parse(await response.text()).pwdList
+        array = JSON.parse(await response.text()).pwdList
     
         let max = calculateMultiply(4, array.length)
         if(max == -1) {
@@ -233,6 +243,11 @@ const deletePassword = (title) => {
 const updatePasswords = (oldTitle, newTitle, psw) => {
     if(psw == "* * * * * * * * * *") { return }
 
+    let updatePwdFlag = "false"
+    if(oldTitle != newTitle) {
+        updatePwdFlag = "true"
+    }
+
     fetch('http://localhost:7550/api/v1/updt-pwd', {
         method: 'POST',
         headers: {
@@ -241,7 +256,8 @@ const updatePasswords = (oldTitle, newTitle, psw) => {
         body: JSON.stringify({
             'oldTitle': oldTitle,
             'newTitle': newTitle,
-            'psw': psw
+            'psw': psw,
+            'updtTitle': updatePwdFlag
         })
 
     }).then(async response => {
@@ -268,4 +284,48 @@ const updatePasswords = (oldTitle, newTitle, psw) => {
     })
 }
 
+const mainBoxDiv = document.getElementsByClassName("main-box")[0]
+
+searchBtn.addEventListener('click', e => {
+    if(searchBox.value.length == 0 || array.length == 0) { return }
+
+    let elements = mainBox.children
+    for(let i = 0; i < elements.length; i++) {
+        elements[i].remove()
+    }
+
+    let matches = []
+    let searchValue = searchBox.value
+
+    array.forEach(pwd => {
+        if(pwd.title.includes(searchValue)) {
+            matches.push(pwd)
+        }
+    })
+
+    if(matches.length == 0) {
+        alert("There is now password with this title.")
+        return window.location.reload()
+    }
+
+    noreset = false
+    let max = calculateMultiply(4, matches.length)
+    if(max == -1) {
+        return  printOnRange(0, matches.length, matches)
+    }
+
+    printOnSameRow(4, matches.length, matches)
+
+    /* if there are more items to print */
+    if((matches.length - max) != 0) {
+        return  printOnRange(max, matches.length, matches)
+    }
+})
+
+resetBox.addEventListener('click', e => {
+    if(noreset == false) {
+        noreset = true
+        window.location.reload()
+    }
+})
 printPasswords()

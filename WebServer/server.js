@@ -183,9 +183,12 @@ app.route('/api/v1/updt-pwd').post(AUTHmiddleware, (request, response) => {
             return response.status(404).json({message: "the given password doesn't exist"})
         }
         
-        /* check if the new title alredy exist */
-        if(cripArray.find(pwd => pwd.title == request.body.newTitle) != undefined) {
-            return response.status(406).json({message: "the new title already exist"})
+        /* check if it has to update the title */
+        if(request.body.updtTitle == "true") {
+            /* check if the new title alredy exist */
+            if(cripArray.find(pwd => pwd.title == request.body.newTitle) != undefined) {
+                return response.status(406).json({message: "the new title already exist"})
+            }
         }
 
         let newArr = cripArray.filter(pass => pass.title != request.body.oldTitle)
