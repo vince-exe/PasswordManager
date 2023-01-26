@@ -1,17 +1,16 @@
-## Working...<br>
+# <p align="center">🔐 Password Manager 🔐</p>
+### <p align="center"> 💻 An application that allows the user to encrypt passwords ( Debian-Linux ) only. 💻</p><br>
 
-## L'APPLICAZIONE APRIRÀ UN SITO WEB IN LOCALHOST PER LA GESTIONE
+## <p align="center">🔨 Installation 🔨</p>
+#### <p align="center">💣 type in your terminal "sudo bash installation.sh" 💣</p><br>
 
-### FATTO:
+## <p align="center">🕹️ Usage 🕹️</p>
+#### <p align="center">🎮 type in your terminal "sudo bash run.sh" 🎮</p><br>
 
-#### questo programma runnerà un .sh file che toglierà a tutti quanti ( owner / group / users / other ) i permessi di
-#### lettura / scrittura / accesso alle directories del programma che conterranno anche i file password criptati
-#### si potrà accedere solo tramite terminale root al programma.<br>
+## <p align="center">💬 Application Info 💬</p>
+### <p align="center"> 💬 The application will use the master key that you will insert in "sign up" phase to encrypt passwords </p>
+### <p align="center"> 🔑 Passwords are encrypted with the "crypto" module. See <a href="https://www.npmjs.com/package/crypto-js">here</a> for more info</p>
+### <p align="center"> 🔒 Master Key is hashed with the "bcrypt" module. See <a href="https://www.npmjs.com/package/bcrypt">here</a> for more info</p><br>
 
-### DA FARE:
-
-#### 2) CREAZIONE / RIMOZIONE / MODIFICA / LETTURA DELLE Password
-
-#### 3) ogni volta che si resetta la password master tutti i file verranno eliminati.
-
-#### 4) bottone per la ricerca delle passwords
+# <p align="center">💘 Thank You 💘</p>
+<p align="center"> <img src="https://data.whicdn.com/images/164035936/original.gif" width="400px" height="400px"></p>
